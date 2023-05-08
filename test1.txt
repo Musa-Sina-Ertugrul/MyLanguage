@@ -1,3 +1,4 @@
 $abc = (1+2);
 $bcd = ($abc + (1 * 2) + 98);
 [eger] $abc ? $bcd : $abc = (2/2) [yada] [bitis];
+[dongu] 10 : $bcd = (7*89) [bitis];

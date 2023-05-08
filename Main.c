@@ -79,13 +79,14 @@ int readFile(char file[])
         printf("Dosya açilamadi");
         return -1;
     }
-    char currentLine[100];
-    for (int i = 0; i < 100; i++)
-    {
-        currentLine[i] = '\000';
-    }
+
     while ((c = fgetc(fp)) != EOF)
     {
+        char currentLine[100];
+        for (int i = 0; i < 100; i++)
+        {
+            currentLine[i] = '\000';
+        }
         int error = yasakliKarakter(c);
         if (error == -1)
         {
@@ -641,12 +642,13 @@ int egerYada(char *line, int *index)
             return -1;
             break;
         }
-    }else{
+    }
+    else
+    {
         printf("syntax hatasi eger ifadesi [bitis] ile bitmelidir");
         return -1;
     }
     return 0;
-
 };
 int degiskenKontrolu(char *line, int *index)
 {
@@ -699,8 +701,166 @@ int degiskenKontrolu(char *line, int *index)
     }
     return 0;
 };
-int dongu(char *line, int *index){
+int dongu(char *line, int *index)
+{
     // dongu işlemi
+    (*index)++;
+    while (line[*index] == ' ' || line[*index] == '\000')
+    {
+        (*index)++;
+    }
+    if (*index == 100)
+    {
+        printf("syntax hatasi uzun satir");
+        return -1;
+    }
+    if (line[*index] == '$')
+    {
+        if (degiskenKontrolu(line, index) == -1)
+        {
+            return -1;
+        }
+    }
+    else if (line[*index] >= '0' && line[*index] <= '9')
+    {
+        while (line[*index] >= '0' && line[*index] <= '9')
+        {
+            (*index)++;
+        }
+    }
+    while (line[*index] == ' ' || line[*index] == '\000')
+    {
+        (*index)++;
+    }
+    if (*index >= 100)
+    {
+        printf("syntax hatasi uzun satir");
+        return -1;
+    }
+    if (line[*index] != ':')
+    {
+        printf("syntax hatasi : eksik");
+        return -1;
+    }
+    (*index)++;
+    while (line[*index] == ' ' || line[*index] == '\000')
+    {
+        (*index)++;
+    }
+    if (*index >= 100)
+    {
+        printf("syntax hatasi uzun satir");
+        return -1;
+    }
+    while (line[*index] == ' ' || line[*index] == '\000')
+    {
+        (*index)++;
+    }
+    if (*index >= 100)
+    {
+        printf("syntax hatasi uzun satir");
+        return -1;
+    }
+    if (line[*index] == '$')
+    {
+        if (degiskenKontrolu(line, index) == -1)
+        {
+            return -1;
+        }
+    }
+    while (line[*index] == ' ' || line[*index] == '\000')
+    {
+        (*index)++;
+    }
+    if (line[*index] == '=')
+    {
+        (*index)++;
+        while (line[*index] == '\000')
+        {
+            index++;
+        }
+        if (line[*index] != ' ')
+        {
+            printf("syntax hatasi = den sonra boşluk olmali");
+            return -1;
+        }
+        (*index)++;
+        return atama(line, index, 99);
+    }
+    else
+    {
+        printf("syntax hatasi dongu yapisinda bir tane atama olmalidir");
+        return -1;
+    }
+    while (line[*index] == ' ' || line[*index] == '\000')
+    {
+        (*index)++;
+    }
+    if (*index >= 100)
+    {
+        printf("syntax hatasi uzun satir");
+        return -1;
+    }
+    if (line[*index] == '[')
+    {
+        char tmp[9];
+        for (int i = 0; i < 9; i++)
+        {
+            tmp[i] = '\000';
+        }
+        int tmpIndex = 0;
+        while (line[*index] != ']')
+        {
+            if (tmpIndex == 9)
+            {
+                printf("syntax hatasi uzun keyword");
+                return -1;
+            }
+            if (line[*index] != '\000')
+            {
+                tmp[tmpIndex] = line[*index];
+                tmpIndex++;
+            }
+            (*index)++;
+        }
+        tmp[tmpIndex] = line[*index];
+        tmpIndex++;
+        int tmpCheck = -1;
+        for (int i = 0; i < 20; i++)
+        {
+            int check = 0;
+            for (int j = 0; j < 9; j++)
+            {
+                if (tmp[j] == LOOKUPARRAY[i][j])
+                {
+                    check++;
+                }
+            }
+            if (check == 9)
+            {
+                tmpCheck = i;
+                break;
+            }
+        }
+        if (tmpCheck == -1)
+        {
+            printf("syntax hatasi böyle bir keyword yok");
+            return -1;
+        }
+        switch (tmpCheck)
+        {
+        case 3:
+            break;
+        default:
+            printf("syntax hatasi bilinmeyen keyword");
+            return -1;
+            break;
+        }
+    }else{
+        printf("syntax hatasi dongu bitmemiş");
+        return -1;
+    }
+    return 0;
 };
 
 int islem(char *line, int *index, int lastIndex)
