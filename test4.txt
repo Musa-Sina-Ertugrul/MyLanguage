@@ -1,0 +1,4 @@
+$abc = (1*78);
+$bcd = ($abc + 478);
+[dongu] $abc : [bitis];
+[eger] $bcd < $abc : $abc = (8 * (8/9) + 77) [yada] [bitis];

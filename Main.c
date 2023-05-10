@@ -16,7 +16,6 @@ int nextOperation(char *, int *, int); // nextOperation fonksiyonu
 int degiskenKontrolu(char *, int *);   // değişken kontrolü
 enum LOOKUP
 {
-    SON = 0,
     EGER = 1,
     YADA = 2,
     BITIS = 3,
@@ -39,7 +38,7 @@ enum LOOKUP
 };
 
 char LOOKUPARRAY[20][9] = {
-    {'[', 'S', 'O', 'N', ']', '\000', '\000', '\000', '\000'},
+    {'\000', '\000', '\000', '\000', '\000', '\000', '\000', '\000', '\000'},
     {'[', 'e', 'g', 'e', 'r', ']', '\000', '\000', '\000'},
     {'[', 'y', 'a', 'd', 'a', ']', '\000', '\000', '\000'},
     {'[', 'b', 'i', 't', 'i', 's', ']', '\000', '\000'},
@@ -65,7 +64,7 @@ int variableCount = 0;
 
 int main()
 {
-    int result = readFile("test1.txt");
+    int result = readFile("test4.txt");
     return result;
 };
 
@@ -106,7 +105,7 @@ int readFile(char file[])
         index = 0;
         if (lex(currentLine) == -1)
         {
-            printf("syntax hatasi");
+            //printf("syntax hatasi");
             return -1;
         }
     }
