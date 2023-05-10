@@ -64,7 +64,10 @@ int variableCount = 0;
 
 int main()
 {
-    int result = readFile("test4.txt");
+    int result = readFile("test3.txt");
+    if(result == 0){
+        printf("kod hatasiz çalişti");
+    }
     return result;
 };
 
